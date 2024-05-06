@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row pt-5">
+    <div class="col-6">
+        <h2> Share your calendar with... </h2>
+        <form class="needs-validation" action="{{ url_for('share') }}" method="POST" enctype="multipart/form-data" novalidate>
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="type" class="form-control" name="username" id="username" required placeholder="Username">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+
+        {% if success %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            Calendar shared succesfully!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% elif success == False %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            Could not share the calendar!
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

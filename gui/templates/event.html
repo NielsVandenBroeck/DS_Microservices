@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row pt-5">
+    <div class="col">
+        {% if success %}
+        <h2 style="display:inline"> {{ event[0] }}</h2>  <h4 style="display:inline; margin-left:60px"> ({{ event[1] }} - {{ event[3] }})</h4>
+        <br>
+        <br>
+        <h4> Organized by {{ event[2] }} </h4>
+        <br>
+        <br>
+        <h3> Participants </h3>
+        <ul>
+            {% for participant in event[4] %}
+                <li> {{ participant[0] }} ({{ participant[1] }})</li>
+            {% endfor %}
+        </ul>
+
+
+        {% else %}
+        <div class="alert alert-danger" role="alert">
+            You do not have access to this event!
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

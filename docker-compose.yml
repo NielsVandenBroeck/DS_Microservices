@@ -1,0 +1,72 @@
+version: "3.9"
+services:
+  gui:
+    build: ./gui
+    ports:
+      - "5000:5000"
+
+  users_persistence:
+    build: ./users_persistence
+    environment:
+      - POSTGRES_DB=userDB
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=postgres
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d userDB" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5432:5432"
+
+  users:
+    build: ./users
+    ports:
+      - "5001:5000"
+    depends_on:
+      users_persistence:
+        condition: service_healthy
+
+  events_persistence:
+    build: ./events_persistence
+    environment:
+      - POSTGRES_DB=eventDB
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=postgres
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d eventDB" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5433:5432"
+
+  events:
+    build: ./events
+    ports:
+      - "5002:5000"
+    depends_on:
+      events_persistence:
+        condition: service_healthy
+
+  calendars_persistence:
+    build: ./calendars_persistence
+    environment:
+      - POSTGRES_DB=calendarDB
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=postgres
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d calendarDB" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "5434:5432"
+
+  calendars:
+    build: ./calendars
+    ports:
+      - "5003:5000"
+    depends_on:
+      calendars_persistence:
+        condition: service_healthy

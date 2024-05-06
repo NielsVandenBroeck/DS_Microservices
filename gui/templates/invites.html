@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row pt-5">
+    <div class="col">
+        <h2> Showing the invites you have not yet responded to</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Organizer</th>
+                    <th scope="col">Private event?</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            {% for invite in invites %}
+            <tr>
+                <td>{{ invite[1] }}</td>
+                <td>{{ invite[2] }}</td>
+                <td>{{ invite[3] }}</td>
+                <td>{{ invite[4] }}</td>
+                <td><button class="btn btn-primary" value="{{ invite[0] }}">Participate</button>
+                    <button class="btn btn-primary" value="{{ invite[0] }}">Maybe Participate</button>
+                    <button class="btn btn-primary" value="{{ invite[0] }}">Don't Participate</button>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function(){
+        $(":button").click(function(){
+            jQuery.ajax({
+                url: '/invites',
+                type: "POST",
+                data: JSON.stringify({
+                    'event': $(this).attr("value"),
+                    'status': $(this).text()
+                }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function(){}
+            });
+        });
+    });
+</script>
+{% endblock %}

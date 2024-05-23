@@ -8,6 +8,7 @@ api = Api(app)
 
 conn = psycopg2.connect(dbname="userDB", user="root", password="postgres", host="users_persistence")
 
+
 class Register(Resource):
     def post(self):
         request_data = request.json
@@ -29,6 +30,7 @@ class Register(Resource):
         requests.post("http://calendars:5000/calendar/create", json={'user_id': user_id})
         return {'message': 'Register successful', 'success': True}, 200
 
+
 class Exists(Resource):
     def get(self):
         request_data = request.json
@@ -45,6 +47,7 @@ class Exists(Resource):
         else:
             return {'success': False}, 200
 
+
 class GetId(Resource):
     def get(self):
         request_data = request.json
@@ -60,6 +63,7 @@ class GetId(Resource):
             return {'message': 'User not found in database', 'success': False}, 200
         return {'success': True, 'id': result[0]}, 200
 
+
 class GetUserName(Resource):
     def get(self):
         request_data = request.json
@@ -71,6 +75,7 @@ class GetUserName(Resource):
         # Get the username from a given user
         curs.execute("SELECT username FROM users WHERE id = %s;", (id,))
         return {'success': True, 'username': curs.fetchone()[0]}, 200
+
 
 api.add_resource(Register, '/user/register')
 api.add_resource(Exists, '/user/exists')
